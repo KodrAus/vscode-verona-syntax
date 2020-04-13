@@ -1,0 +1,70 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Verona",
+	"patterns": [
+		{
+			"include": "#comment"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#cown"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.verona",
+					"match": "\\b(if|when)\\b"
+				},
+				{
+					"name": "keyword.other.class.verona",
+					"match": "\\b(class)\\b"
+				},
+				{
+					"name": "keyword.other.builtin.verona",
+					"match": "\\b(builtin)\\b"
+				}
+			]
+		},
+		"cown": {
+			"patterns": [
+				{
+					"name": "keyword.other.cown.verona",
+					"match": "\\b(cown|imm|iso|mut)\\b"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.verona",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.verona",
+					"match": "\\\\."
+				}
+			]
+		},
+		"comment": {
+			"patterns": [
+				{
+					"name": "comment.block.verona",
+					"begin": "/\\*",
+					"end": "\\*/"
+				},
+				{
+					"name": "comment.inline.verona",
+					"begin": "//",
+					"end": "$"
+				}
+			]
+		}
+	},
+	"scopeName": "source.verona"
+}
