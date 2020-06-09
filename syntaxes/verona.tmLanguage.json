@@ -6,51 +6,45 @@
       "include": "#comment"
     },
     {
-      "include": "#class-declaration"
+      "include": "#class"
     }
   ],
   "repository": {
     "cown": {
-      "patterns": [
-        {
-          "match": "\\b(cown)\\b",
-          "captures": {
-            "1": {
-              "name": "keyword.other.cown.verona"
-            }
-          }
-        }
-      ]
-    },
-    "access": {
-      "match": "(&)\\s*(imm|iso|mut)\\b",
+      "match": "\\b(cown)\\b",
       "captures": {
-        "1": {
-          "name": "punctuation.ampersand.verona"
-        },
-        "2": {
-          "name": "keyword.other.access.verona"
+        "0": {
+          "name": "keyword.other.cown.verona"
         }
       }
     },
-    "class-declaration": {
-      "begin": "(?=\\bclass|primitive\\b)",
+    "class": {
+      "begin": "(?=\\bclass|primitive)",
       "end": "(?<=\\})",
+      "name": "meta.class.verona",
       "patterns": [
         {
-          "begin": "\\b(class|primitive)\\b\\s+([_[:alpha:]][_[:alnum:]]*)\\s*",
-          "beginCaptures": {
-            "1": {
+          "begin": "(?=\\bclass|primitive\\b\\s+[_[:alpha:]][_[:alnum:]]*(\\[.*\\])?\\s*)",
+          "end": "(?=\\{)",
+          "name": "meta.class.header.verona",
+          "patterns": [
+            {
+              "match": "class",
               "name": "keyword.other.class.verona"
             },
-            "2": {
-              "name": "entity.name.type.class.verona"
-            }
-          },
-          "end": "(?=\\{)",
-          "patterns": [
             {
-              "include": "#generic-declaration"
+              "match": "primitive",
+              "name": "keyword.other.primitive.verona"
+            },
+            {
+              "include": "#cown"
+            },
+            {
+              "include": "#generics"
+            },
+            {
+              "match": "[_[:alpha:]][_[:alnum:]]*",
+              "name": "entity.name.type.verona"
             }
           ]
         },
@@ -67,157 +61,16 @@
               "name": "punctuation.curlybrace.close.verona"
             }
           },
+          "name": "meta.class.block.verona",
           "patterns": [
-            {
-              "include": "#comment"
-            },
-            {
-              "include": "#item-declaration-modifier"
-            },
-            {
-              "include": "#field-declaration"
-            },
-            {
-              "include": "#function-declaration"
-            }
           ]
         }
       ]
     },
-    "item-declaration-modifier": {
-      "patterns": [
-        {
-          "match": "\\b(builtin)\\b",
-          "captures": {
-            "1": {
-              "name": "keyword.other.builtin.verona"
-            }
-          }
-        }
-      ]
-    },
-    "field-declaration": {
-      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)\\b\\s*(?=:)",
-      "beginCaptures": {
-        "1": {
-          "name": "entity.name.variable.field.verona"
-        }
-      },
-      "end": "(?<=;)",
-      "patterns": [
-        {
-          "begin": ":",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.colon.verona"
-            }
-          },
-          "end": ";",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.semicolon.verona"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#type-declaration"
-            }
-          ]
-        }
-      ]
-    },
-    "function-declaration": {
-      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)\\b\\s*(?=[\\[\\(])",
-      "beginCaptures": {
-        "1": {
-          "name": "entity.name.function.verona"
-        }
-      },
-      "end": "(?<=[;\\{])",
-      "patterns": [
-        {
-          "include": "#generic-declaration"
-        },
-        {
-          "begin": "\\(",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.paren.open.verona"
-            }
-          },
-          "end": "\\)",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.paren.close.verona"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#comment"
-            }
-          ]
-        },
-        {
-          "begin": ":",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.colon.verona"
-            }
-          },
-          "end": "(?<=[;\\{])",
-          "patterns": [
-            {
-              "include": "#type-declaration"
-            }
-          ]
-        },
-        {
-          "begin": "\\{",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.curlybrace.open.verona"
-            }
-          },
-          "end": "\\}",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.curlybrace.close.verona"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#comment"
-            }
-          ]
-        },
-        {
-          "match": ";",
-          "name": "punctuation.semicolon.verona"
-        }
-      ]
-    },
-    "type-declaration": {
-      "begin": "(?=\\b([_[:alpha:]][_[:alnum:]]*)\\b)",
-      "end": "(?<=[,;\\{\\)])",
-      "patterns": [
-        {
-          "include": "#cown"
-        },
-        {
-          "match": "\\b([_[:alpha:]][_[:alnum:]]*)\\b",
-          "name": "entity.name.type.verona"
-        },
-        {
-          "include": "#generic-declaration"
-        },
-        {
-          "include": "#access"
-        }
-      ]
-    },
-    "generic-declaration": {
+    "generics": {
       "begin": "(?=\\[)",
       "end": "(?<=\\])",
+      "name": "meta.generics.verona",
       "patterns": [
         {
           "begin": "\\[",
@@ -234,37 +87,25 @@
           },
           "patterns": [
             {
-              "match": "class",
-              "captures": {
-                "0": {
-                  "name": "keyword.type.generic-parameter.class.verona"
+              "begin": "(?=\\b((class)\\s+)?[_[:alpha:]][_[:alnum:]]*\\b)",
+              "end": "(?=[,\\]])",
+              "name": "meta.generics.type.verona",
+              "patterns": [
+                {
+                  "match": "class",
+                  "name": "keyword.other.generics.constraint.class.verona"
+                },
+                {
+                  "match": "[_[:alpha:]][_[:alnum:]]*",
+                  "name": "entity.name.type.generic.verona"
                 }
-              }
-            },
-            {
-              "match": "([_[:alpha:]][_[:alnum:]]*)\\b",
-              "captures": {
-                "1": {
-                  "name": "entity.name.type.generic-parameter.verona"
-                }
-              }
+              ]
             },
             {
               "match": ",",
               "name": "punctuation.comma.verona"
             }
           ]
-        }
-      ]
-    },
-    "strings": {
-      "name": "string.quoted.double.verona",
-      "begin": "\"",
-      "end": "\"",
-      "patterns": [
-        {
-          "name": "constant.character.escape.verona",
-          "match": "\\\\."
         }
       ]
     },
