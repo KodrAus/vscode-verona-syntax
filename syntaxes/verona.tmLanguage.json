@@ -18,6 +18,17 @@
         }
       }
     },
+    "pointer": {
+      "match": "(&)\\s*\\b(imm|mut|iso)\\b",
+      "captures": {
+        "1": {
+          "name": "punctuation.ampersand.verona"
+        },
+        "2": {
+          "name": "keyword.other.mutability.verona"
+        }
+      }
+    },
     "class": {
       "begin": "(?=\\bclass|primitive)",
       "end": "(?<=\\})",
@@ -63,6 +74,54 @@
           },
           "name": "meta.class.block.verona",
           "patterns": [
+            {
+              "include": "#comment"
+            },
+            {
+              "include": "#field"
+            }
+          ]
+        }
+      ]
+    },
+    "field": {
+      "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*:)",
+      "end": "(?<=;)",
+      "name": "meta.field.verona",
+      "patterns": [
+        {
+          "begin": "[_[:alpha:]][_[:alnum:]]*",
+          "end": "(?=:)",
+          "name": "entity.name.variable.field.verona"
+        },
+        {
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.colon.verona"
+            }
+          },
+          "end": ";",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.semicolon.verona"
+            }
+          },
+          "name": "meta.field.type.verona",
+          "patterns": [
+            {
+              "include": "#cown"
+            },
+            {
+              "include": "#pointer"
+            },
+            {
+              "include": "#generics"
+            },
+            {
+              "match": "[_[:alpha:]][_[:alnum:]]*",
+              "name": "entity.name.type.field.verona"
+            }
           ]
         }
       ]
