@@ -1,70 +1,287 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Verona",
-	"patterns": [
-		{
-			"include": "#comment"
-		},
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#cown"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [
-				{
-					"name": "keyword.control.verona",
-					"match": "\\b(if|when)\\b"
-				},
-				{
-					"name": "keyword.other.class.verona",
-					"match": "\\b(class)\\b"
-				},
-				{
-					"name": "keyword.other.builtin.verona",
-					"match": "\\b(builtin)\\b"
-				}
-			]
-		},
-		"cown": {
-			"patterns": [
-				{
-					"name": "keyword.other.cown.verona",
-					"match": "\\b(cown|imm|iso|mut)\\b"
-				}
-			]
-		},
-		"strings": {
-			"name": "string.quoted.double.verona",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.verona",
-					"match": "\\\\."
-				}
-			]
-		},
-		"comment": {
-			"patterns": [
-				{
-					"name": "comment.block.verona",
-					"begin": "/\\*",
-					"end": "\\*/"
-				},
-				{
-					"name": "comment.inline.verona",
-					"begin": "//",
-					"end": "$"
-				}
-			]
-		}
-	},
-	"scopeName": "source.verona"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Verona",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#class-declaration"
+    }
+  ],
+  "repository": {
+    "cown": {
+      "patterns": [
+        {
+          "match": "\\b(cown)\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.other.cown.verona"
+            }
+          }
+        }
+      ]
+    },
+    "access": {
+      "match": "(&)\\s*(imm|iso|mut)\\b",
+      "captures": {
+        "1": {
+          "name": "punctuation.ampersand.verona"
+        },
+        "2": {
+          "name": "keyword.other.access.verona"
+        }
+      }
+    },
+    "class-declaration": {
+      "begin": "(?=\\bclass|primitive\\b)",
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "begin": "\\b(class|primitive)\\b\\s+([_[:alpha:]][_[:alnum:]]*)\\s*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.other.class.verona"
+            },
+            "2": {
+              "name": "entity.name.type.class.verona"
+            }
+          },
+          "end": "(?=\\{)",
+          "patterns": [
+            {
+              "include": "#generic-declaration"
+            }
+          ]
+        },
+        {
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.curlybrace.open.verona"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.curlybrace.close.verona"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment"
+            },
+            {
+              "include": "#item-declaration-modifier"
+            },
+            {
+              "include": "#field-declaration"
+            },
+            {
+              "include": "#function-declaration"
+            }
+          ]
+        }
+      ]
+    },
+    "item-declaration-modifier": {
+      "patterns": [
+        {
+          "match": "\\b(builtin)\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.other.builtin.verona"
+            }
+          }
+        }
+      ]
+    },
+    "field-declaration": {
+      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)\\b\\s*(?=:)",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.variable.field.verona"
+        }
+      },
+      "end": "(?<=;)",
+      "patterns": [
+        {
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.colon.verona"
+            }
+          },
+          "end": ";",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.semicolon.verona"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#type-declaration"
+            }
+          ]
+        }
+      ]
+    },
+    "function-declaration": {
+      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)\\b\\s*(?=[\\[\\(])",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.verona"
+        }
+      },
+      "end": "(?<=[;\\{])",
+      "patterns": [
+        {
+          "include": "#generic-declaration"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.paren.open.verona"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.paren.close.verona"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment"
+            }
+          ]
+        },
+        {
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.colon.verona"
+            }
+          },
+          "end": "(?<=[;\\{])",
+          "patterns": [
+            {
+              "include": "#type-declaration"
+            }
+          ]
+        },
+        {
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.curlybrace.open.verona"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.curlybrace.close.verona"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment"
+            }
+          ]
+        },
+        {
+          "match": ";",
+          "name": "punctuation.semicolon.verona"
+        }
+      ]
+    },
+    "type-declaration": {
+      "begin": "(?=\\b([_[:alpha:]][_[:alnum:]]*)\\b)",
+      "end": "(?<=[,;\\{\\)])",
+      "patterns": [
+        {
+          "include": "#cown"
+        },
+        {
+          "match": "\\b([_[:alpha:]][_[:alnum:]]*)\\b",
+          "name": "entity.name.type.verona"
+        },
+        {
+          "include": "#generic-declaration"
+        },
+        {
+          "include": "#access"
+        }
+      ]
+    },
+    "generic-declaration": {
+      "begin": "(?=\\[)",
+      "end": "(?<=\\])",
+      "patterns": [
+        {
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.open.verona"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.close.verona"
+            }
+          },
+          "patterns": [
+            {
+              "match": "class",
+              "captures": {
+                "0": {
+                  "name": "keyword.type.generic-parameter.class.verona"
+                }
+              }
+            },
+            {
+              "match": "([_[:alpha:]][_[:alnum:]]*)\\b",
+              "captures": {
+                "1": {
+                  "name": "entity.name.type.generic-parameter.verona"
+                }
+              }
+            },
+            {
+              "match": ",",
+              "name": "punctuation.comma.verona"
+            }
+          ]
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.verona",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.verona",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.block.verona",
+          "begin": "/\\*",
+          "end": "\\*/"
+        },
+        {
+          "name": "comment.inline.verona",
+          "begin": "//",
+          "end": "$"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.verona"
 }
