@@ -22,337 +22,78 @@
     },
     {
       "include": "#block"
+    },
+    {
+      "include": "keyword"
     }
   ],
   "repository": {
-    "cown": {
-      "match": "\\b(cown)\\b",
-      "captures": {
-        "0": {
+    "keyword": {
+      "patterns": [
+        {
+          "match": "\\bcown\\b",
           "name": "keyword.other.cown.verona"
-        }
-      }
-    },
-    "builtin": {
-      "match": "\\b(builtin)\\b",
-      "captures": {
-        "0": {
-          "name": "keyword.other.builtin.verona"
-        }
-      }
-    },
-    "self": {
-      "match": "\\bself\\b",
-      "name": "keyword.other.self.verona"
-    },
-    "mutview": {
-      "match": "\\bmut-view\\b",
-      "name": "keyword.other.mutview.verona"
-    },
-    "mutability": {
-      "match": "\\b(imm|mut|iso)\\b",
-      "captures": {
-        "1": {
-          "name": "keyword.other.mutability.verona"
-        }
-      }
-    },
-    "use": {
-      "begin": "(?=\\b(use)\\b)",
-      "beginCaptures": {
-        "1": {
+        },
+        {
+          "match": "\\buse\\b",
           "name": "keyword.other.use.verona"
-        }
-      },
-      "end": "$",
-      "patterns": [
-        {
-          "include": "#string"
-        }
-      ]
-    },
-    "class": {
-      "begin": "(?=\\b(?:class|primitive|interface)\\b)",
-      "end": "(?<=\\})",
-      "patterns": [
-        {
-          "begin": "(?=[_[:alnum:]])",
-          "end": "(?=\\{)",
-          "patterns": [
-            {
-              "match": "class",
-              "name": "keyword.other.class.verona"
-            },
-            {
-              "match": "primitive",
-              "name": "keyword.other.primitive.verona"
-            },
-            {
-              "match": "interface",
-              "name": "keyword.other.interface.verona"
-            },
-            {
-              "include": "#cown"
-            },
-            {
-              "include": "#generics"
-            },
-            {
-              "match": "[_[:alpha:]][_[:alnum:]]*",
-              "name": "entity.name.type.verona"
-            }
-          ]
         },
         {
-          "include": "#object-block"
-        }
-      ]
-    },
-    "typedef": {
-      "begin": "\\b(type)\\b\\s+",
-      "beginCaptures": {
-        "0": {
-          "name": "keyword.other.type.verona"
-        }
-      },
-      "end": "(?<=;)",
-      "patterns": [
-        {
-          "begin": "(?=[_[:alnum:]])",
-          "end": "(?=\\=)",
-          "patterns": [
-            {
-              "include": "#type"
-            }
-          ]
+          "match": "\\bbuiltin\\b",
+          "name": "keyword.other.builtin.verona"
         },
         {
-          "begin": "\\=",
-          "end": ";",
-          "patterns": [
-            {
-              "include": "#type"
-            }
-          ]
-        }
-      ]
-    },
-    "function": {
-      "begin": "(?=(?:\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*[\\(\\[])|[\\(\\[])",
-      "end": "(?<=;)|(?=\\{)",
-      "patterns": [
-        {
-          "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b)",
-          "end": "(?=\\()",
-          "patterns": [
-            {
-              "include": "#generics"
-            },
-            {
-              "match": "final",
-              "name": "keyword.other.final.verona"
-            },
-            {
-              "match": "[_[:alpha:]][_[:alnum:]]*",
-              "name": "entity.name.function.verona"
-            }
-          ]
+          "match": "\\bself\\b",
+          "name": "keyword.other.self.verona"
         },
         {
-          "begin": "\\(",
-          "end": ";|(?=\\{)",
-          "patterns": [
-            {
-              "include": "#where"
-            },
-            {
-              "include": "#arg"
-            },
-            {
-              "include": "#type"
-            }
-          ]
-        }
-      ]
-    },
-    "where": {
-      "begin": "(?=\\bwhere\\b)",
-      "end": "(?=[;\\{])",
-      "patterns": [
+          "match": "\\bmut-view\\b",
+          "name": "keyword.other.mutview.verona"
+        },
         {
-          "match": "where",
+          "match": "\\bclass\\b",
+          "name": "keyword.other.class.verona"
+        },
+        {
+          "match": "\\bprimitive\\b",
+          "name": "keyword.other.primitive.verona"
+        },
+        {
+          "match": "\\binterface\\b",
+          "name": "keyword.other.interface.verona"
+        },
+        {
+          "match": "\\bvar\\b",
+          "name": "keyword.other.var.verona"
+        },
+        {
+          "match": "\\blet\\b",
+          "name": "keyword.other.let.verona"
+        },
+        {
+          "match": "\\bnew\\b",
+          "name": "keyword.operator.new.verona"
+        },
+        {
+          "match": "\\bfinal\\b",
+          "name": "keyword.other.final.verona"
+        },
+        {
+          "match": "\\bwhere\\b",
           "name": "keyword.control.where.verona"
         },
         {
-          "match": "in",
-          "name": "keyword.control.where.in.verona"
+          "match": "\\bin\\b",
+          "name": "keyword.control.in.verona"
         },
         {
-          "match": "from",
-          "name": "keyword.control.where.from.verona"
+          "match": "\\bfrom\\b",
+          "name": "keyword.control.from.verona"
         },
         {
-          "match": "return",
-          "name": "keyword.control.where.return.verona"
+          "match": "\\breturn\\b",
+          "name": "keyword.control.return.verona"
         },
-        {
-          "include": "#self"
-        },
-        {
-          "begin": ":",
-          "end": "(?=[;,\\{]|where)",
-          "patterns": [
-            {
-              "include": "#type"
-            }
-          ]
-        },
-        {
-          "match": "[_[:alpha:]][_[:alnum:]]*(?=:)",
-          "name": "entity.name.type.verona"
-        },
-        {
-          "match": "[_[:alpha:]][_[:alnum:]]*",
-          "name": "entity.name.variable.verona"
-        }
-      ]
-    },
-    "arg": {
-      "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*[,:\\)])",
-      "end": "(?=[,\\)])",
-      "patterns": [
-        {
-          "include": "#self"
-        },
-        {
-          "begin": "[_[:alpha:]][_[:alnum:]]*",
-          "end": "(?=[,:\\)])",
-          "name": "entity.name.variable.argument.verona"
-        },
-        {
-          "begin": ":",
-          "end": "(?=[,\\)])",
-          "patterns": [
-            {
-              "include": "#type"
-            }
-          ]
-        }
-      ]
-    },
-    "field": {
-      "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*:)",
-      "end": "(?<=;)",
-      "patterns": [
-        {
-          "begin": "[_[:alpha:]][_[:alnum:]]*",
-          "end": "(?=:)",
-          "name": "entity.name.variable.field.verona"
-        },
-        {
-          "begin": ":",
-          "end": ";|(?=\\=)",
-          "patterns": [
-            {
-              "include": "#type"
-            }
-          ]
-        },
-        {
-          "begin": "\\=",
-          "end": ";",
-          "patterns": [
-            {
-              "include": "#expr"
-            }
-          ]
-        }
-      ]
-    },
-    "object-block": {
-      "begin": "\\{",
-      "end": "\\}",
-      "patterns": [
-        {
-          "include": "#comment"
-        },
-        {
-          "include": "#class"
-        },
-        {
-          "include": "#builtin"
-        },
-        {
-          "include": "#typedef"
-        },
-        {
-          "include": "#function"
-        },
-        {
-          "include": "#field"
-        },
-        {
-          "include": "#block"
-        }
-      ]
-    },
-    "block": {
-      "begin": "\\{",
-      "end": "\\}",
-      "patterns": [
-        {
-          "include": "#expr"
-        }
-      ]
-    },
-    "expr": {
-      "patterns": [
-        {
-          "include": "#comment"
-        },
-        {
-          "include": "#string"
-        },
-        {
-          "include": "#number"
-        },
-        {
-          "include": "#boolean"
-        },
-        {
-          "include": "#self"
-        },
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#mutview"
-        },
-        {
-          "include": "#new"
-        },
-        {
-          "include": "#control-flow"
-        },
-        {
-          "include": "#assignment"
-        },
-        {
-          "include": "#call"
-        },
-        {
-          "include": "#access"
-        },
-        {
-          "include": "#generics"
-        },
-        {
-          "include": "#identifier"
-        }
-      ]
-    },
-    "control-flow": {
-      "patterns": [
         {
           "match": "\\bwhen\\b",
           "name": "keyword.control.when.verona"
@@ -395,21 +136,252 @@
         }
       ]
     },
-    "assignment": {
-      "begin": "(?=\\b(?:var|let)\\b\\s+)",
-      "end": "(?<=[\\=;])",
+    "mutability": {
+      "match": "\\b(imm|mut|iso)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.other.mutability.verona"
+        }
+      }
+    },
+    "use": {
+      "begin": "(?=\\buse\\b)",
+      "end": "(?<=\")",
       "patterns": [
         {
-          "match": "\\bvar\\b",
-          "name": "keyword.other.var.verona"
+          "include": "#string"
         },
         {
-          "match": "\\blet\\b",
-          "name": "keyword.other.let.verona"
+          "include": "#keyword"
+        }
+      ]
+    },
+    "class": {
+      "begin": "(?=\\b(?:class|primitive|interface)\\b)",
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "begin": "(?=[_[:alnum:]])",
+          "end": "(?=\\{)",
+          "patterns": [
+            {
+              "include": "#generics"
+            },
+            {
+              "include": "#keyword"
+            },
+            {
+              "match": "[_[:alpha:]][_[:alnum:]]*",
+              "name": "entity.name.type.verona"
+            }
+          ]
         },
         {
-          "begin": "[_[:alpha:]][_[:alnum:]]*",
-          "end": "(?=[\\=;:])",
+          "include": "#object-block"
+        }
+      ]
+    },
+    "typedef": {
+      "begin": "\\b(?:type)\\b",
+      "end": "(?<=;)",
+      "patterns": [
+        {
+          "include": "#keyword"
+        },
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "function": {
+      "begin": "(?=(?:\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*[\\(\\[])|[\\(\\[])",
+      "end": "(?<=;)|(?=\\{)",
+      "patterns": [
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*\\b\\s*(?=[\\(\\[])",
+          "name": "entity.name.function.verona"
+        },
+        {
+          "include": "#generics"
+        },
+        {
+          "include": "#where"
+        },
+        {
+          "include": "#keyword"
+        },
+        {
+          "include": "#arg"
+        },
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "where": {
+      "begin": "(?=\\bwhere\\b)",
+      "end": "(?=[;\\{])",
+      "patterns": [
+        {
+          "include": "#keyword"
+        },
+        {
+          "begin": ":",
+          "end": "(?=[;,\\{]|where)",
+          "patterns": [
+            {
+              "include": "#type"
+            }
+          ]
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*\\s*(?=:)",
+          "name": "entity.name.type.verona"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
+          "name": "entity.name.variable.verona"
+        }
+      ]
+    },
+    "arg": {
+      "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*[,:\\)])",
+      "end": "(?=[,\\)])",
+      "patterns": [
+        {
+          "include": "#keyword"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
+          "name": "entity.name.variable.argument.verona"
+        },
+        {
+          "begin": ":",
+          "end": "(?=[,\\)])",
+          "patterns": [
+            {
+              "include": "#type"
+            }
+          ]
+        }
+      ]
+    },
+    "field": {
+      "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*:)",
+      "end": "(?<=;)",
+      "patterns": [
+        {
+          "include": "#keyword"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
+          "name": "entity.name.variable.field.verona"
+        },
+        {
+          "begin": ":",
+          "end": ";|(?=\\=)",
+          "patterns": [
+            {
+              "include": "#type"
+            }
+          ]
+        },
+        {
+          "begin": "\\=",
+          "end": ";",
+          "patterns": [
+            {
+              "include": "#expr"
+            }
+          ]
+        }
+      ]
+    },
+    "object-block": {
+      "begin": "\\{",
+      "end": "\\}",
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#class"
+        },
+        {
+          "include": "#typedef"
+        },
+        {
+          "include": "#function"
+        },
+        {
+          "include": "#field"
+        },
+        {
+          "include": "#block"
+        },
+        {
+          "include": "#keyword"
+        }
+      ]
+    },
+    "block": {
+      "begin": "\\{",
+      "end": "\\}",
+      "patterns": [
+        {
+          "include": "#expr"
+        }
+      ]
+    },
+    "expr": {
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#number"
+        },
+        {
+          "include": "#boolean"
+        },
+        {
+          "include": "#new"
+        },
+        {
+          "include": "#assignment"
+        },
+        {
+          "include": "#keyword"
+        },
+        {
+          "include": "#call"
+        },
+        {
+          "include": "#access"
+        },
+        {
+          "include": "#generics"
+        },
+        {
+          "include": "#identifier"
+        },
+        {
+          "include": "#block"
+        }
+      ]
+    },
+    "assignment": {
+      "begin": "(?=\\b(?:var|let)\\b\\s+)",
+      "end": "(?<=[\\=;])|(?=[,\\}\\)])",
+      "patterns": [
+        {
+          "include": "#keyword"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
           "name": "entity.name.variable.verona"
         },
         {
@@ -440,22 +412,14 @@
       }
     },
     "new": {
-      "begin": "\\b(new)\\b",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword.operator.new.verona"
-        }
-      },
-      "end": "(?<=;)",
+      "begin": "(?=\\b(?:new)\\b\\s+)",
+      "end": "(?<=;)|(?=[,\\}\\)])",
       "patterns": [
         {
-          "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b)",
-          "end": ";|(?=\\{)",
-          "patterns": [
-            {
-              "include": "#type"
-            }
-          ]
+          "include": "#keyword"
+        },
+        {
+          "include": "#type"
         },
         {
           "include": "#object-block"
@@ -469,7 +433,7 @@
     "type": {
       "patterns": [
         {
-          "include": "#cown"
+          "include": "#keyword"
         },
         {
           "include": "#mutability"
@@ -492,19 +456,18 @@
           "end": "\\]",
           "patterns": [
             {
-              "begin": "(?=\\b(?:class\\s+)?[_[:alpha:]][_[:alnum:]]*\\b)",
+              "begin": "(?=\\b(?:(?:class|type)\\s+)?[_[:alpha:]][_[:alnum:]]*\\b)",
               "end": "(?=[,\\]])",
               "patterns": [
                 {
-                  "include": "#generics"
-                },
-                {
-                  "match": "class",
-                  "name": "keyword.other.generics.constraint.class.verona"
+                  "include": "#keyword"
                 },
                 {
                   "match": "[_[:alpha:]][_[:alnum:]]*",
                   "name": "entity.name.type.generic.verona"
+                },
+                {
+                  "include": "#generics"
                 }
               ]
             }
