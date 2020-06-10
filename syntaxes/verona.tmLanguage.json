@@ -198,23 +198,33 @@
       "end": "(?<=;)|(?=\\{)",
       "patterns": [
         {
-          "match": "[_[:alpha:]][_[:alnum:]]*\\b\\s*(?=[\\(\\[])",
+          "include": "#keyword"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
           "name": "entity.name.function.verona"
         },
         {
           "include": "#generics"
         },
         {
-          "include": "#where"
-        },
-        {
-          "include": "#keyword"
-        },
-        {
-          "include": "#arg"
-        },
-        {
-          "include": "#type"
+          "begin": "\\(",
+          "end": "(?<=;)|(?=\\{)",
+          "patterns": [
+            {
+              "include": "#keyword"
+            },
+            {
+              "include": "#arg"
+            },
+            {
+              "include": "#type"
+            },
+            
+            {
+              "include": "#where"
+            }
+          ]
         }
       ]
     },
