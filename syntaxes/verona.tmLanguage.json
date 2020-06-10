@@ -32,6 +32,14 @@
         }
       }
     },
+    "self": {
+      "match": "\\bself\\b",
+      "name": "keyword.other.self.verona"
+    },
+    "mutview": {
+      "match": "\\mut-view\\b",
+      "name": "keyword.other.mutview.verona"
+    },
     "mutability": {
       "match": "\\b(imm|mut|iso)\\b",
       "captures": {
@@ -272,13 +280,6 @@
       "end": "\\}",
       "patterns": [
         {
-          "include": "#expr"
-        }
-      ]
-    },
-    "expr": {
-      "patterns": [
-        {
           "include": "#comment"
         },
         {
@@ -392,14 +393,6 @@
           "name": "entity.name.type.verona"
         }
       }
-    },
-    "self": {
-      "match": "\\bself\\b",
-      "name": "keyword.other.self.verona"
-    },
-    "mutview": {
-      "match": "\\mut-view\\b",
-      "name": "keyword.other.mutview.verona"
     },
     "identifier": {
       "match": "\\b([_[:alpha:]][_[:alnum:]]*)\\b",
