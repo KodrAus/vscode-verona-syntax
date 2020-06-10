@@ -6,7 +6,16 @@
       "include": "#comment"
     },
     {
+      "include": "#use"
+    },
+    {
       "include": "#class"
+    },
+    {
+      "include": "#typedef"
+    },
+    {
+      "include": "#function"
     }
   ],
   "repository": {
@@ -26,14 +35,6 @@
         }
       }
     },
-    "pointer": {
-      "match": "&",
-      "captures": {
-        "1": {
-          "name": "punctuation.ampersand.verona"
-        }
-      }
-    },
     "mutability": {
       "match": "\\b(imm|mut|iso)\\b",
       "captures": {
@@ -42,15 +43,27 @@
         }
       }
     },
-    "class": {
-      "begin": "(?=\\b(?:class|primitive))",
-      "end": "(?<=\\})",
-      "name": "meta.class.verona",
+    "use": {
+      "begin": "(?=\\b(use)\\b)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.use.verona"
+        }
+      },
+      "end": "$",
       "patterns": [
         {
-          "begin": "(?=\\b(?:class|primitive)\\b\\s+[_[:alpha:]][_[:alnum:]]*(?:\\[.*\\])?\\s*)",
+          "include": "#string"
+        }
+      ]
+    },
+    "class": {
+      "begin": "(?=\\b(?:class|primitive|interface)\\b)",
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "begin": "(?=class|primitive|interface)",
           "end": "(?=\\{)",
-          "name": "meta.class.header.verona",
           "patterns": [
             {
               "match": "class",
@@ -59,6 +72,10 @@
             {
               "match": "primitive",
               "name": "keyword.other.primitive.verona"
+            },
+            {
+              "match": "interface",
+              "name": "keyword.other.interface.verona"
             },
             {
               "include": "#cown"
@@ -74,27 +91,22 @@
         },
         {
           "begin": "\\{",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.curlybrace.open.verona"
-            }
-          },
           "end": "\\}",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.curlybrace.close.verona"
-            }
-          },
-          "name": "meta.class.block.verona",
           "patterns": [
             {
               "include": "#comment"
+            },
+            {
+              "include": "#class"
             },
             {
               "include": "#block"
             },
             {
               "include": "#builtin"
+            },
+            {
+              "include": "#typedef"
             },
             {
               "include": "#function"
@@ -106,13 +118,41 @@
         }
       ]
     },
+    "typedef": {
+      "begin": "\\b(type)\\b\\s+",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.other.type.verona"
+        }
+      },
+      "end": "(?<=;)",
+      "patterns": [
+        {
+          "begin": "(?=[_[:alnum:]])",
+          "end": "(?=\\=)",
+          "patterns": [
+            {
+              "include": "#type"
+            }
+          ]
+        },
+        {
+          "begin": "\\=",
+          "end": ";",
+          "patterns": [
+            {
+              "include": "#type"
+            }
+          ]
+        }
+      ]
+    },
     "function": {
       "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*[\\(\\[])",
       "end": "(?<=;)|(?=\\{)",
-      "name": "meta.function.verona",
       "patterns": [
         {
-          "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*)",
+          "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b)",
           "end": "(?=\\()",
           "patterns": [
             {
@@ -126,39 +166,66 @@
         },
         {
           "begin": "\\(",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.paren.open.verona"
-            }
-          },
-          "end": "(?=;)|(?=\\{)",
+          "end": ";|(?=\\{)",
           "patterns": [
+            {
+              "include": "#where"
+            },
             {
               "include": "#arg"
             },
             {
               "include": "#type"
-            },
+            }
+          ]
+        }
+      ]
+    },
+    "where": {
+      "begin": "(?=\\bwhere\\b)",
+      "end": "(?=[;\\{])",
+      "patterns": [
+        {
+          "match": "where",
+          "name": "keyword.control.where.verona"
+        },
+        {
+          "match": "in",
+          "name": "keyword.control.where.in.verona"
+        },
+        {
+          "match": "from",
+          "name": "keyword.control.where.from.verona"
+        },
+        {
+          "match": "return",
+          "name": "keyword.other.return.verona"
+        },
+        {
+          "include": "#self"
+        },
+        {
+          "begin": ":",
+          "end": "(?=[;,\\{]|where)",
+          "patterns": [
             {
-              "match": ":",
-              "name": "punctuation.colon.verona"
-            },
-            {
-              "match": "\\)",
-              "name": "punctuation.paren.close.verona"
+              "include": "#type"
             }
           ]
         },
         {
-          "match": ";",
-          "name": "punctuation.semicolon.verona"
+          "match": "[_[:alpha:]][_[:alnum:]]*(?=:)",
+          "name": "entity.name.type.verona"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
+          "name": "entity.name.variable.verona"
         }
       ]
     },
     "arg": {
       "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*:)",
       "end": "(?=[,\\)])",
-      "name": "meta.argument.verona",
       "patterns": [
         {
           "include": "#self"
@@ -170,17 +237,7 @@
         },
         {
           "begin": ":",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.colon.verona"
-            }
-          },
           "end": "(?=[,\\)])",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.semicolon.verona"
-            }
-          },
           "patterns": [
             {
               "include": "#type"
@@ -192,7 +249,6 @@
     "field": {
       "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*:)",
       "end": "(?<=;)",
-      "name": "meta.field.verona",
       "patterns": [
         {
           "begin": "[_[:alpha:]][_[:alnum:]]*",
@@ -201,17 +257,7 @@
         },
         {
           "begin": ":",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.colon.verona"
-            }
-          },
           "end": ";",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.semicolon.verona"
-            }
-          },
           "patterns": [
             {
               "include": "#type"
@@ -222,18 +268,14 @@
     },
     "block": {
       "begin": "\\{",
-      "beginCaptures": {
-        "0": {
-          "name": "punctuation.curlybrace.open.verona"
-        }
-      },
       "end": "\\}",
-      "endCaptures": {
-        "0": {
-          "name": "punctuation.curlybrace.close.verona"
+      "patterns": [
+        {
+          "include": "#expr"
         }
-      },
-      "name": "meta.block.verona",
+      ]
+    },
+    "expr": {
       "patterns": [
         {
           "include": "#comment"
@@ -257,6 +299,9 @@
           "include": "#mutview"
         },
         {
+          "include": "#new"
+        },
+        {
           "include": "#control-flow"
         },
         {
@@ -269,7 +314,7 @@
           "include": "#accessor"
         },
         {
-          "include": "#new"
+          "include": "#generics"
         },
         {
           "include": "#identifier"
@@ -311,18 +356,7 @@
         },
         {
           "begin": ":",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.colon.verona"
-            }
-          },
           "end": "(?=\\=|;)",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.semicolon.verona"
-            }
-          },
-          "name": "meta.variable.type.verona",
           "patterns": [
             {
               "include": "#type"
@@ -332,23 +366,17 @@
       ]
     },
     "accessor": {
-      "match": "(\\.)([_[:alpha:]][_[:alnum:]]*)\\b",
+      "match": "\\.([_[:alpha:]][_[:alnum:]]*)\\b",
       "captures": {
         "1": {
-          "name": "punctuation.dot.verona"
-        },
-        "2": {
           "name": "entity.name.variable.field.verona"
         }
       }
     },
     "call": {
-      "match": "(\\.)([_[:alpha:]][_[:alnum:]]*)\\b\\s*(?=\\()",
+      "match": "\\.([_[:alpha:]][_[:alnum:]]*)\\b\\s*(?=[\\[\\(])",
       "captures": {
         "1": {
-          "name": "punctuation.dot.verona"
-        },
-        "2": {
           "name": "entity.name.function.verona"
         }
       }
@@ -389,22 +417,7 @@
           "include": "#mutability"
         },
         {
-          "include": "#pointer"
-        },
-        {
           "include": "#generics"
-        },
-        {
-          "match": "\\(",
-          "name": "punctuation.paren.open.verona"
-        },
-        {
-          "match": "\\)",
-          "name": "punctuation.paren.close.verona"
-        },
-        {
-          "match": "\\|",
-          "name": "punctuation.verticalbar.verona"
         },
         {
           "match": "[_[:alpha:]][_[:alnum:]]*",
@@ -415,26 +428,14 @@
     "generics": {
       "begin": "(?=\\[)",
       "end": "(?<=\\])",
-      "name": "meta.generics.verona",
       "patterns": [
         {
           "begin": "\\[",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.bracket.open.verona"
-            }
-          },
           "end": "\\]",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.bracket.close.verona"
-            }
-          },
           "patterns": [
             {
               "begin": "(?=\\b(?:class\\s+)?[_[:alpha:]][_[:alnum:]]*\\b)",
               "end": "(?=[,\\]])",
-              "name": "meta.generics.type.verona",
               "patterns": [
                 {
                   "include": "#generics"
@@ -448,10 +449,6 @@
                   "name": "entity.name.type.generic.verona"
                 }
               ]
-            },
-            {
-              "match": ",",
-              "name": "punctuation.comma.verona"
             }
           ]
         }
