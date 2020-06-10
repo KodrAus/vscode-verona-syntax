@@ -63,6 +63,10 @@
           "name": "keyword.other.interface.verona"
         },
         {
+          "match": "\\btype\\b",
+          "name": "keyword.other.type.verona"
+        },
+        {
           "match": "\\bvar\\b",
           "name": "keyword.other.var.verona"
         },
@@ -161,20 +165,14 @@
       "end": "(?<=\\})",
       "patterns": [
         {
-          "begin": "(?=[_[:alnum:]])",
-          "end": "(?=\\{)",
-          "patterns": [
-            {
-              "include": "#generics"
-            },
-            {
-              "include": "#keyword"
-            },
-            {
-              "match": "[_[:alpha:]][_[:alnum:]]*",
-              "name": "entity.name.type.verona"
-            }
-          ]
+          "include": "#generics"
+        },
+        {
+          "include": "#keyword"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
+          "name": "entity.name.type.verona"
         },
         {
           "include": "#object-block"
@@ -182,7 +180,7 @@
       ]
     },
     "typedef": {
-      "begin": "\\b(?:type)\\b",
+      "begin": "(?=\\btype\\b)",
       "end": "(?<=;)",
       "patterns": [
         {
@@ -212,17 +210,13 @@
           "end": "(?<=;)|(?=\\{)",
           "patterns": [
             {
-              "include": "#keyword"
+              "include": "#where"
             },
             {
               "include": "#arg"
             },
             {
               "include": "#type"
-            },
-            
-            {
-              "include": "#where"
             }
           ]
         }
@@ -396,7 +390,7 @@
         },
         {
           "begin": ":",
-          "end": "[;\\=]",
+          "end": "[;\\=]|(?=[,\\}\\)])",
           "patterns": [
             {
               "include": "#type"

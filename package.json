@@ -1,25 +1,28 @@
 {
-    "name": "verona",
-    "displayName": "Verona",
-    "description": "Syntax highlighting for Verona",
-    "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.44.0"
-    },
-    "categories": [
-        "Programming Languages"
-    ],
-    "contributes": {
-        "languages": [{
-            "id": "verona",
-            "aliases": ["Verona", "verona"],
-            "extensions": [".verona"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "verona",
-            "scopeName": "source.verona",
-            "path": "./syntaxes/verona.tmLanguage.json"
-        }]
-    }
+  "name": "vscode-verona-syntax",
+  "displayName": "Verona Syntax",
+  "description": "Syntax highlighting for Verona",
+  "repository": "https://github.com/KodrAus/vscode-verona-syntax",
+  "author": "Ashley Mannix",
+  "version": "0.0.1",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.44.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "verona",
+      "aliases": ["Verona", "verona"],
+      "extensions": [".verona"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "verona",
+      "scopeName": "source.verona",
+      "path": "./syntaxes/verona.tmLanguage.json"
+    }]
+  }
 }

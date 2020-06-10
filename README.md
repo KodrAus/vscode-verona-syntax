@@ -1,10 +1,13 @@
-# `vscode-verona`
+# Verona Syntax
+
+## `vscode-verona-syntax`
 
 Syntax highlighting for the [Verona](https://github.com/microsoft/verona) research language in VS Code.
 
-![Example highlighting](images/example.png)
+![Example highlighting](images/demo.gif)
 
 ## Current state
 
-This syntax highlighting probably has gaps in its support, and may become out-of-date as the Verona language itself evolves.
-If you spot anything that just doesn't look right then PRs are welcome!
+This extension is still a work in progress. It's loosely based off the Verona compiler's PEG grammar, but there are bound to be bugs and gaps, especially as Verona itself changes.
+
+If you spot anything that just doesn't look right then [please file an issue or pull request!](https://github.com/KodrAus/vscode-verona-syntax/issues).
