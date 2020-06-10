@@ -3,6 +3,7 @@
   "displayName": "Verona Syntax",
   "description": "Syntax highlighting for Verona",
   "repository": "https://github.com/KodrAus/vscode-verona-syntax",
+  "publisher": "KodrAus",
   "author": "Ashley Mannix",
   "version": "0.0.1",
   "license": "MIT",
