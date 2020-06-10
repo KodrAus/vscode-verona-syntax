@@ -159,6 +159,10 @@
               "include": "#generics"
             },
             {
+              "match": "final",
+              "name": "keyword.other.final.verona"
+            },
+            {
               "match": "[_[:alpha:]][_[:alnum:]]*",
               "name": "entity.name.function.verona"
             }
