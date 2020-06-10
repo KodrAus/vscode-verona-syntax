@@ -43,12 +43,12 @@
       }
     },
     "class": {
-      "begin": "(?=\\bclass|primitive)",
+      "begin": "(?=\\b(?:class|primitive))",
       "end": "(?<=\\})",
       "name": "meta.class.verona",
       "patterns": [
         {
-          "begin": "(?=\\bclass|primitive\\b\\s+[_[:alpha:]][_[:alnum:]]*(\\[.*\\])?\\s*)",
+          "begin": "(?=\\b(?:class|primitive)\\b\\s+[_[:alpha:]][_[:alnum:]]*(?:\\[.*\\])?\\s*)",
           "end": "(?=\\{)",
           "name": "meta.class.header.verona",
           "patterns": [
@@ -106,26 +106,6 @@
         }
       ]
     },
-    "block": {
-      "begin": "\\{",
-      "beginCaptures": {
-        "0": {
-          "name": "punctuation.curlybrace.open.verona"
-        }
-      },
-      "end": "\\}",
-      "endCaptures": {
-        "0": {
-          "name": "punctuation.curlybrace.close.verona"
-        }
-      },
-      "name": "meta.block.verona",
-      "patterns": [
-        {
-          "include": "#block"
-        }
-      ]
-    },
     "function": {
       "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*[\\(\\[])",
       "end": "(?<=;)|(?=\\{)",
@@ -151,18 +131,42 @@
               "name": "punctuation.paren.open.verona"
             }
           },
-          "end": "(\\))(?=\\s*[:;\\{])",
-          "endCaptures": {
-            "1": {
-              "name": "punctuation.paren.close.verona"
-            }
-          },
-          "name": "meta.function.arguments.verona",
+          "end": "(?=;)|(?=\\{)",
           "patterns": [
             {
               "include": "#arg"
+            },
+            {
+              "include": "#type"
+            },
+            {
+              "match": ":",
+              "name": "punctuation.colon.verona"
+            },
+            {
+              "match": "\\)",
+              "name": "punctuation.paren.close.verona"
             }
           ]
+        },
+        {
+          "match": ";",
+          "name": "punctuation.semicolon.verona"
+        }
+      ]
+    },
+    "arg": {
+      "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*:)",
+      "end": "(?=[,\\)])",
+      "name": "meta.argument.verona",
+      "patterns": [
+        {
+          "include": "#self"
+        },
+        {
+          "begin": "[_[:alpha:]][_[:alnum:]]*",
+          "end": "(?=:)",
+          "name": "entity.name.variable.argument.verona"
         },
         {
           "begin": ":",
@@ -171,17 +175,17 @@
               "name": "punctuation.colon.verona"
             }
           },
-          "end": "(?=;)|(?=\\{)",
-          "name": "meta.function.return.verona",
+          "end": "(?=[,\\)])",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.semicolon.verona"
+            }
+          },
           "patterns": [
             {
               "include": "#type"
             }
           ]
-        },
-        {
-          "match": ";",
-          "name": "punctuation.semicolon.verona"
         }
       ]
     },
@@ -208,7 +212,6 @@
               "name": "punctuation.semicolon.verona"
             }
           },
-          "name": "meta.field.type.verona",
           "patterns": [
             {
               "include": "#type"
@@ -217,19 +220,94 @@
         }
       ]
     },
-    "arg": {
-      "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*:)",
-      "end": "(?=[,\\)])",
-      "name": "meta.argument.verona",
+    "block": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.curlybrace.open.verona"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.curlybrace.close.verona"
+        }
+      },
+      "name": "meta.block.verona",
       "patterns": [
         {
-          "match": "\\bself\\b",
-          "name": "keyword.other.self.verona"
+          "include": "#comment"
+        },
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#number"
+        },
+        {
+          "include": "#boolean"
+        },
+        {
+          "include": "#block"
+        },
+        {
+          "include": "#self"
+        },
+        {
+          "include": "#mutview"
+        },
+        {
+          "include": "#control-flow"
+        },
+        {
+          "include": "#assignment"
+        },
+        {
+          "include": "#call"
+        },
+        {
+          "include": "#accessor"
+        },
+        {
+          "include": "#new"
+        },
+        {
+          "include": "#identifier"
+        }
+      ]
+    },
+    "control-flow": {
+      "patterns": [
+        {
+          "match": "\\bwhen\\b",
+          "name": "keyword.control.when.verona"
+        },
+        {
+          "match": "\\bmatch\\b",
+          "name": "keyword.control.match.verona"
+        },
+        {
+          "match": "\\bif\\b",
+          "name": "keyword.control.if.verona"
+        }
+      ]
+    },
+    "assignment": {
+      "begin": "(?=\\b(?:var|let)\\b\\s+)",
+      "end": "(?=[\\=;])",
+      "patterns": [
+        {
+          "match": "\\bvar\\b",
+          "name": "keyword.other.var.verona"
+        },
+        {
+          "match": "\\blet\\b",
+          "name": "keyword.other.var.verona"
         },
         {
           "begin": "[_[:alpha:]][_[:alnum:]]*",
-          "end": "(?=:)",
-          "name": "entity.name.variable.argument.verona"
+          "end": "(?=[\\=;:])",
+          "name": "entity.name.variable.verona"
         },
         {
           "begin": ":",
@@ -238,13 +316,13 @@
               "name": "punctuation.colon.verona"
             }
           },
-          "end": "(?=[,\\)])",
+          "end": "(?=\\=|;)",
           "endCaptures": {
             "0": {
               "name": "punctuation.semicolon.verona"
             }
           },
-          "name": "meta.argument.type.verona",
+          "name": "meta.variable.type.verona",
           "patterns": [
             {
               "include": "#type"
@@ -253,50 +331,54 @@
         }
       ]
     },
-    "generics": {
-      "begin": "(?=\\[)",
-      "end": "(?<=\\])",
-      "name": "meta.generics.verona",
-      "patterns": [
-        {
-          "begin": "\\[",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.bracket.open.verona"
-            }
-          },
-          "end": "\\]",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.bracket.close.verona"
-            }
-          },
-          "patterns": [
-            {
-              "begin": "(?=\\b((class)\\s+)?[_[:alpha:]][_[:alnum:]]*\\b)",
-              "end": "(?=[,\\]])",
-              "name": "meta.generics.type.verona",
-              "patterns": [
-                {
-                  "include": "#generics"
-                },
-                {
-                  "match": "class",
-                  "name": "keyword.other.generics.constraint.class.verona"
-                },
-                {
-                  "match": "[_[:alpha:]][_[:alnum:]]*",
-                  "name": "entity.name.type.generic.verona"
-                }
-              ]
-            },
-            {
-              "match": ",",
-              "name": "punctuation.comma.verona"
-            }
-          ]
+    "accessor": {
+      "match": "(\\.)([_[:alpha:]][_[:alnum:]]*)\\b",
+      "captures": {
+        "1": {
+          "name": "punctuation.dot.verona"
+        },
+        "2": {
+          "name": "entity.name.variable.field.verona"
         }
-      ]
+      }
+    },
+    "call": {
+      "match": "(\\.)([_[:alpha:]][_[:alnum:]]*)\\b\\s*(?=\\()",
+      "captures": {
+        "1": {
+          "name": "punctuation.dot.verona"
+        },
+        "2": {
+          "name": "entity.name.function.verona"
+        }
+      }
+    },
+    "new": {
+      "match": "\\b(new)\\s+([_[:alpha:]][_[:alnum:]]*)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.operator.new.verona"
+        },
+        "2": {
+          "name": "entity.name.type.verona"
+        }
+      }
+    },
+    "self": {
+      "match": "\\bself\\b",
+      "name": "keyword.other.self.verona"
+    },
+    "mutview": {
+      "match": "\\mut-view\\b",
+      "name": "keyword.other.mutview.verona"
+    },
+    "identifier": {
+      "match": "\\b([_[:alpha:]][_[:alnum:]]*)\\b",
+      "captures": {
+        "1": {
+          "name": "entity.name.variable.verona"
+        }
+      }
     },
     "type": {
       "patterns": [
@@ -329,6 +411,74 @@
           "name": "entity.name.type.verona"
         }
       ]
+    },
+    "generics": {
+      "begin": "(?=\\[)",
+      "end": "(?<=\\])",
+      "name": "meta.generics.verona",
+      "patterns": [
+        {
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.open.verona"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.close.verona"
+            }
+          },
+          "patterns": [
+            {
+              "begin": "(?=\\b(?:class\\s+)?[_[:alpha:]][_[:alnum:]]*\\b)",
+              "end": "(?=[,\\]])",
+              "name": "meta.generics.type.verona",
+              "patterns": [
+                {
+                  "include": "#generics"
+                },
+                {
+                  "match": "class",
+                  "name": "keyword.other.generics.constraint.class.verona"
+                },
+                {
+                  "match": "[_[:alpha:]][_[:alnum:]]*",
+                  "name": "entity.name.type.generic.verona"
+                }
+              ]
+            },
+            {
+              "match": ",",
+              "name": "punctuation.comma.verona"
+            }
+          ]
+        }
+      ]
+    },
+    "string": {
+      "name": "string.quoted.double.verona",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.verona",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "number": {
+      "match": "\\b(?:-?(?:(?:\\d+|\\d*\\.\\d+)(?:[E|e][+|-]?\\d+)?))\\b",
+      "name": "constant.numeric.verona"
+    },
+    "boolean": {
+      "match": "\\b(true|false)\\b",
+      "captures": {
+        "1": {
+          "name": "constant.language.boolean.verona"
+        }
+      }
     },
     "comment": {
       "patterns": [
