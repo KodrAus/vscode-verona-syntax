@@ -67,7 +67,7 @@
       "end": "(?<=\\})",
       "patterns": [
         {
-          "begin": "(?=class|primitive|interface)",
+          "begin": "(?=[_[:alnum:]])",
           "end": "(?=\\{)",
           "patterns": [
             {
@@ -349,7 +349,7 @@
         },
         {
           "match": "\\blet\\b",
-          "name": "keyword.other.var.verona"
+          "name": "keyword.other.let.verona"
         },
         {
           "begin": "[_[:alpha:]][_[:alnum:]]*",
