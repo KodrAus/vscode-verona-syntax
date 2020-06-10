@@ -27,13 +27,10 @@
       }
     },
     "pointer": {
-      "match": "(&)\\s*\\b(imm|mut|iso)\\b",
+      "match": "&",
       "captures": {
         "1": {
           "name": "punctuation.ampersand.verona"
-        },
-        "2": {
-          "name": "keyword.other.mutability.verona"
         }
       }
     },
@@ -44,36 +41,6 @@
           "name": "keyword.other.mutability.verona"
         }
       }
-    },
-    "multi-mutability": {
-      "begin": "(?=\\((?:\\s*imm|mut|iso))",
-      "end": "(?<=\\))",
-      "name": "meta.multi-mutability.verona",
-      "patterns": [
-        {
-          "begin": "\\(",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.paren.open.verona"
-            }
-          },
-          "end": "\\)",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.paren.close.verona"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#mutability"
-            },
-            {
-              "match": "\\|",
-              "name": "punctuation.veritalbar.verona"
-            }
-          ]
-        }
-      ]
     },
     "class": {
       "begin": "(?=\\bclass|primitive)",
@@ -141,8 +108,23 @@
     },
     "block": {
       "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.curlybrace.open.verona"
+        }
+      },
       "end": "\\}",
-      "name": "meta.block.verona"
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.curlybrace.close.verona"
+        }
+      },
+      "name": "meta.block.verona",
+      "patterns": [
+        {
+          "include": "#block"
+        }
+      ]
     },
     "function": {
       "begin": "(?=\\b[_[:alpha:]][_[:alnum:]]*\\b\\s*[\\(\\[])",
@@ -193,17 +175,7 @@
           "name": "meta.function.return.verona",
           "patterns": [
             {
-              "include": "#cown"
-            },
-            {
-              "include": "#pointer"
-            },
-            {
-              "include": "#generics"
-            },
-            {
-              "match": "[_[:alpha:]][_[:alnum:]]*",
-              "name": "entity.name.type.return.verona"
+              "include": "#type"
             }
           ]
         },
@@ -239,17 +211,7 @@
           "name": "meta.field.type.verona",
           "patterns": [
             {
-              "include": "#cown"
-            },
-            {
-              "include": "#pointer"
-            },
-            {
-              "include": "#generics"
-            },
-            {
-              "match": "[_[:alpha:]][_[:alnum:]]*",
-              "name": "entity.name.type.field.verona"
+              "include": "#type"
             }
           ]
         }
@@ -285,23 +247,7 @@
           "name": "meta.argument.type.verona",
           "patterns": [
             {
-              "include": "#cown"
-            },
-            {
-              "include": "#pointer"
-            },
-            {
-              "include": "#multi-mutability"
-            },
-            {
-              "include": "#mutability"
-            },
-            {
-              "include": "#generics"
-            },
-            {
-              "match": "[_[:alpha:]][_[:alnum:]]*",
-              "name": "entity.name.type.field.verona"
+              "include": "#type"
             }
           ]
         }
@@ -332,6 +278,9 @@
               "name": "meta.generics.type.verona",
               "patterns": [
                 {
+                  "include": "#generics"
+                },
+                {
                   "match": "class",
                   "name": "keyword.other.generics.constraint.class.verona"
                 },
@@ -346,6 +295,38 @@
               "name": "punctuation.comma.verona"
             }
           ]
+        }
+      ]
+    },
+    "type": {
+      "patterns": [
+        {
+          "include": "#cown"
+        },
+        {
+          "include": "#mutability"
+        },
+        {
+          "include": "#pointer"
+        },
+        {
+          "include": "#generics"
+        },
+        {
+          "match": "\\(",
+          "name": "punctuation.paren.open.verona"
+        },
+        {
+          "match": "\\)",
+          "name": "punctuation.paren.close.verona"
+        },
+        {
+          "match": "\\|",
+          "name": "punctuation.verticalbar.verona"
+        },
+        {
+          "match": "[_[:alpha:]][_[:alnum:]]*",
+          "name": "entity.name.type.verona"
         }
       ]
     },
